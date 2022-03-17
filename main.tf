@@ -10,8 +10,8 @@ module "resource_group" {
 module "network" {
   source         = "./modules/network"
   rg_network     = "Network-RG"
-  resource_group = "module.resource_group.rg_network.name"
-  location       = "canadacentral"
+  resource_group = module.resource_group.rg_network.name
+  location       = module.resource_group.rg_network.location
   vnet           = "vnet1"
   vnet_space     = ["10.0.0.0/16"]
   subnet         = "subnet"
@@ -25,11 +25,11 @@ module "network" {
 module "linux" {
   source         = "./modules/linux"
   rg_linux       = "Linux-RG"
-  linux-name     = "ansible-c-vm"
+  linux-name     = "dhvani-c-vm"
   linux_avset    = "linux-avs"
   nb_count       = 2
-  location       = "canadacentral"
-  resource_group = "module.resource_group.rg_linux.name"
+  location       = module.resource_group.rg_linux.location
+  resource_group = module.resource_group.rg_linux.name
   subnet1_id     = module.network.subnet1_id
   depends_on     = [module.network]
 }
@@ -39,11 +39,10 @@ module "windows" {
   rg_windows  = "Windows-RG"
   windows_avs = "windows-avs"
   windows_name = {
-    ansible-w-vm1 = "Standard_Bls"
+    dhvani-w-vm1 = "Standard_Bls"
   }
-  location       = "canadacentral"
-  resource_group = "module.resource_group.rg_windows.name"
+  location       = module.resource_group.rg_windows.location
+  resource_group = module.resource_group.rg_windows.name
   subnet2_id     = module.network.subnet2_id
   depends_on     = [module.network]
 }
-
