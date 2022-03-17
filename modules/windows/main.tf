@@ -12,6 +12,8 @@ resource "azurerm_public_ip" "windows_pip" {
   resource_group_name = var.rg_windows
   location            = var.location
   allocation_method   = "Dynamic"
+  domain_name_label   = each.key
+
 
   tags = local.common_tags
 }
